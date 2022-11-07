@@ -5,21 +5,21 @@ import {useGetTodoQuery, useAddTodoMutation} from '../../store/counter.api';
 import { plusOne, minusOne } from "../../store/counter.slice";
 
 const Counter = () => {
-  const [number, setNumber] = useState('');
+  // const [number, setNumber] = useState(1);
   const [todoTitle, setTodoTitle] = useState('');
-  // const number = useSelector(state => state.number);
-  // const dispatch = useDispatch();
+  const number = useSelector(state => state.counter.number);
+  const dispatch = useDispatch();
 
   const {isLoading, data = []} = useGetTodoQuery(number);
   const [addTodo, {isLoading: loading}] = useAddTodoMutation();
 
   const handlerAddOne = () => {
-    // dispatch(plusOne());
-    setNumber(prev => prev + 1)
+    dispatch(plusOne());
+    // setNumber(prev => prev + 1)
   }
   const handlerMinusOne = () => {
-    // dispatch(minusOne())
-    setNumber(prev => prev - 1)
+    dispatch(minusOne())
+    // setNumber(prev => prev - 1)
   };
 
   const handlerInputTodoName = e => setTodoTitle(e.target.value);
@@ -34,6 +34,7 @@ const Counter = () => {
 
     await addTodo(body).unwrap();
     setTodoTitle('')
+    handlerAddOne();
   }
 
   return (
